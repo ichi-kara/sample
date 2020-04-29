@@ -1,0 +1,211 @@
+@charset "utf-8";
+
+//config.css
+@import "config.scss";
+
+//clearfix
+@mixin clearfix {
+	zoom: 1;
+	&:after {
+		display: block;
+		clear: both;
+		height: 0;
+		visibility: hidden;
+		content: " ";
+	}
+}
+
+@mixin hover {
+	&:hover {
+		@include opacity(0.7);
+		@include transition(0.4s);
+	}
+}
+
+//font-size
+@mixin fz($value, $spWidth:$spWidth) {
+	@media (min-width:$spWidth+1+px) {
+		font-size: $value + rem;
+	}
+	@media (max-width:$spWidth+px) {
+		font-size: $value/$spWidth*1000 + vw
+	}
+}
+
+@mixin font($font) {
+	@if $font == mincho {
+		font-family: '游明朝', 'Yu Mincho', 'ヒラギノ明朝 ProN W6', 'HiraMinProN-W6', 'HG明朝E', 'ＭＳ Ｐ明朝', 'MS PMincho', 'MS 明朝';
+	}
+}
+
+//center
+@mixin center($marginBottom, $width, $parentWidth: auto) {
+	@if $parentWidth == auto {
+		margin: 0 auto $marginBottom;
+		max-width: $width;
+	} @else {
+		margin: 0 auto percentage($marginBottom/$parentWidth);
+		max-width: percentage($width/$parentWidth);
+	}
+}
+
+//gradation
+@mixin gradation($start, $end){
+	background: $start;
+	background: -moz-linear-gradient(top,  $start 0%, $end 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start), color-stop(100%,$end));
+	background: -webkit-linear-gradient(top, $start 0%, $end 100%);
+	background: linear-gradient(to bottom, $start 0%, $end 100%);
+	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$start}', endColorstr='#{$end}', GradientType=0)"; 
+}
+
+//borderRadius
+@mixin borderRadius($size) {
+	border-radius: $size;
+	-webkit-border-radius: $size;
+	-moz-border-radius: $size;
+}
+
+//shadow
+@mixin shadow($size, $color) {
+	-moz-box-shadow: 1px 1px $size $color;
+	-webkit-box-shadow: 1px 1px $size $color;
+	box-shadow: 1px 1px $size $color;
+}
+
+//opacity
+@mixin opacity($value) {
+	opacity: $value;
+	filter: alpha(opacity=$value*100);        	/* ie lt 8 */
+	-ms-filter: "alpha(opacity=#{$value*100})";  /* ie 8 */
+	-moz-opacity: $value;                 /* FF lt 1.5, Netscape */
+	-khtml-opacity: $value;              /* Safari 1.x */
+	zoom:1;
+}
+
+//outerBrilliance
+@mixin outerBrilliance($size, $color) {
+	-moz-box-shadow: 1px 1px $size $color, 1px 1px $size $color, 1px 1px $size $color;
+	-webkit-box-shadow: 1px 1px $size $color, 1px 1px $size $color, 1px 1px $size $color;
+	box-shadow: 1px 1px $size $color, 1px 1px $size $color, 1px 1px $size $color;
+}
+
+//innerBrilliance
+@mixin innerBrilliance($size, $color) {
+	-webkit-box-shadow: inset 0px 0px $size $color;
+	-moz-box-shadow: inset 0px 0px $size $color;
+	box-shadow: inset 0px 0px $size $color;
+}
+
+//asbolute
+@mixin absolute ($yValue: auto, $xValue: auto, $yKey: top, $xKey: left) {
+	position: absolute;
+	#{$yKey}: $yValue;
+	#{$xKey}: $xValue;
+}
+
+//margin/padding
+@mixin margin($top, $right, $bottom, $left, $parentWidth) {
+	margin: percentage($top/$parentWidth) percentage($right/$parentWidth) percentage($bottom/$parentWidth) percentage($left/$parentWidth);
+}
+@mixin padding($top, $right, $bottom, $left, $parentWidth) {
+	padding: percentage($top/$parentWidth) percentage($right/$parentWidth) percentage($bottom/$parentWidth) percentage($left/$parentWidth);
+}
+
+//hangingList
+@mixin hangingList($paddingLeft: 1em, $textIndent: -1em) {
+    padding-left: $paddingLeft;
+    text-indent: $textIndent;
+}
+
+//middleline
+@mixin middleline($height, $ie: 0){
+	height: $height + px;
+	line-height: $height + px;
+	&:not(:target){
+		line-height: $height + $ie + px + \9;
+	}
+	:root & {
+		line-height: $height + $ie + px + \9;
+	}
+}
+
+
+
+//triangle
+@mixin triangle($size: 8px, $color: #000, $side: top, $position: 50%, $direction: regular) {
+	position: relative;
+	&::after {
+		content: "";
+		border: solid transparent;
+		display: inline-block;
+		position: absolute;
+		border-width: $size;
+		
+		@if $direction == reverse {
+			@if $side == top {
+				border-bottom-color: $color;
+				margin-left: -$size;
+				left: $position;
+				bottom: -($size * 2);
+			}
+			@elseif $side == right {
+				border-left-color: $color;
+				margin-top: -$size;
+				left: -($size * 2);
+				top: $position;
+			}
+			@elseif $side == bottom {
+				border-top-color: $color;
+				margin-left: -$size;
+				left: $position;
+				top: -($size * 2);
+			}
+			@else {
+				border-right-color: $color;
+				margin-top: -$size;
+				right: -($size * 2);
+				top: $position;
+			}
+		} @else {
+			@if $side == top {
+				border-bottom-color: $color;
+				margin-left: -$size;
+				left: $position;
+				top: -($size * 2);
+			}
+			@elseif $side == right {
+				border-left-color: $color;
+				margin-top: -$size;
+				right: -($size * 2);
+				top: $position;
+			}
+			@elseif $side == bottom {
+				border-top-color: $color;
+				margin-left: -$size;
+				left: $position;
+				bottom: -($size * 2);
+			}
+			@else {
+				border-right-color: $color;
+				margin-top: -$size;
+				left: -($size * 2);
+				top: $position;
+			}
+		}
+	}
+}
+
+//arrowlink
+@mixin arrowlink($top, $size: 10, $color: #000){
+    position: relative;
+    padding-left: 10px;
+    &:before{
+        display: block;
+        content: "";
+        position: absolute;
+        top: $top + px;
+        left: 1px;
+        @include arrow(right, $size, $color);
+    }
+}
